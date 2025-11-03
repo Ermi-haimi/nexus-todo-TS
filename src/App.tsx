@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+type Todo = {
+    id: number;
+    task: string
 }
 
-export default App
+function App() {
+
+    const [todos, setTodos] = useState<Todo[]>([]);
+    const [task, setTask] = useState<string>("");
+
+    function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+        setTask(e.target.value)
+    }
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (task.trim().length === 0) {
+            alert("Please write a todo");
+            return;
+        }
+
+        const todo: Todo = {
+            id: Date.now(),
+            task: task.trim()
+        }
+
+        setTodos([todo, ...todos]);
+        setTask("");
+        
+    }
+
+    function handleDelete(id: number) {
+        const newTodos = todos.filter(work => work.id !== id);
+        setTodos(newTodos)
+        
+    }
+
+
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+            <input type="text" onChange={handleInput}/>
+                <button type="submit" >Add</button>
+            </form>
+            <ul>
+                {todos.map(work => (
+                    <li key={work.id}>
+                        {work.task}
+                        <button onClick={() => { handleDelete(work.id) }}>Delete</button>
+                    </li>
+                    
+                    
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default App;
