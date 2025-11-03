@@ -53,28 +53,29 @@ function App() {
     function handleDelete(id: number) {
         const newTodos = todos.filter(work => work.id !== id);
         setTodos(newTodos)
-        
     }
 
-
-
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="input">.</label>
-            <input type="text" id="input" onChange={handleInput}/>
-                <button type="submit" >Add</button>
+        <div className=" bg-orange-100 h-screen">
+            <h1 className="bg-linear-0 to-orange-300 from-orange-100 p-5 text-5xl font-bold mb-3">Write Your Todo list</h1>
+            <div className="max-w-xl flex flex-col items-center  m-auto px-2">
+            
+            <form onSubmit={handleSubmit} className="flex justify-center m-auto w-full gap-2 -3 border-amber-900">
+                <label htmlFor="input" className="hidden">.</label>
+            <input type="text" id="input" onChange={handleInput} className="border flex-1 px-1 bg-orange-300"/>
+                <button type="submit" className="bg-green-600 px-3 p-1 rounded-md w-17">Add</button>
             </form>
-            <ul>
+            <ul className="flex justify-center items- flex-col m-auto -3 -blue-900 w-full">
                 {todos.map(work => (
-                    <li key={work.id}>
+                    <li key={work.id} className="flex justify-between max-w p-1 px-3">
                         {work.task}
-                        <button onClick={() => { handleDelete(work.id) }}>Delete</button>
+                        <button onClick={() => { handleDelete(work.id) }} className="bg-red-500 rounded-sm p-1">Delete</button>
                     </li>
                     
                     
                 ))}
-            </ul>
+                </ul>
+                </div>
         </div>
     );
 }
