@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Todo = {
     id: number;
@@ -9,6 +9,25 @@ function App() {
 
     const [todos, setTodos] = useState<Todo[]>([]);
     const [task, setTask] = useState<string>("");
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        const savedTodo = localStorage.getItem("savedTodos");
+        if (savedTodo) {
+            setTodos(JSON.parse(savedTodo))
+        }
+        setIsLoaded(true);
+    }, [])
+    
+
+    useEffect(() => {
+        if (isLoaded) {
+            localStorage.setItem("savedTodos", JSON.stringify(todos)) 
+            
+        };
+    }, [todos, isLoaded])
+    
+    
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         setTask(e.target.value)
@@ -42,7 +61,8 @@ function App() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-            <input type="text" onChange={handleInput}/>
+                <label htmlFor="input">.</label>
+            <input type="text" id="input" onChange={handleInput}/>
                 <button type="submit" >Add</button>
             </form>
             <ul>
